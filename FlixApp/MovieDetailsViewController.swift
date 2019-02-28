@@ -1,0 +1,65 @@
+//
+//  MovieDetailsViewController.swift
+//  FlixApp
+//
+//  Created by user148140 on 2/28/19.
+//  Copyright © 2019 user148140. All rights reserved.
+//
+
+import UIKit
+import AlamofireImage
+
+//This is a dedicated viewcontroller swift file for the second screen (Movie Details View)
+
+
+class MovieDetailsViewController: UIViewController {
+   
+    // Outlets for image view and labels
+    @IBOutlet weak var backdropView: UIImageView!
+    @IBOutlet weak var posterView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var synopsisLabel: UILabel!
+    
+    // Create a property called movie which is a dictionary and optional !
+    // Copied from the main view controller (moviesViewController); every controller needs this property
+    var movie: [String:Any]!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+        
+        titleLabel.text = movie["title"] as? String
+        synopsisLabel.text = movie["overview"] as? String
+        
+        // Fixes the cut-off synopsis description label
+        titleLabel.sizeToFit()
+        synopsisLabel.sizeToFit()
+        
+        // Load image files for the poster view
+        // ** When using ImageLabel View in the main storyboard, always set the content mode under property to Aspect Fill and check "clip to bounce" when using Aspect Fill option
+        let baseUrl = "https://image.tmdb.org/t/p/w185" //baseUrl with picture size w185
+        let posterPath = movie["poster_path"] as! String
+        let posterUrl = URL(string: baseUrl + posterPath)
+        
+        posterView.af_setImage(withURL: posterUrl!)
+        
+        // Load image files for the backdrop view
+        let backdropPath = movie["backdrop_path"] as! String
+        let backdropUrl = URL(string: "https://image.tmdb.org/t/p/w780" + backdropPath)
+        
+        backdropView.af_setImage(withURL: backdropUrl!)
+    }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
